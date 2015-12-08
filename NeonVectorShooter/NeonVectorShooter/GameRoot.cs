@@ -16,25 +16,30 @@ namespace NeonVectorShooter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public static GameRoot Instance { get; private set; }
+        public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
+        public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
+        
+
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Instance = this;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+            EntityManager.Add(PlayerShip.Instance);
         }
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
+            
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            Art.Load(Content);
         }
 
         protected override void UnloadContent()
@@ -48,16 +53,18 @@ namespace NeonVectorShooter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            EntityManager.Update();
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
+            EntityManager.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

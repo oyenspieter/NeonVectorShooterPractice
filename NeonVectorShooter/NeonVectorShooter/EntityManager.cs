@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NeonVectorShooter
 {
-    static class EnitityManager
+    static class EntityManager
     {
         static List<Enitity> entities = new List<Enitity>();
 
@@ -42,6 +42,7 @@ namespace NeonVectorShooter
 
             addedEntities.Clear();
 
+            // remove any expired entities
             entities = entities.Where(x => !x.isExpired).ToList();
         }
 
