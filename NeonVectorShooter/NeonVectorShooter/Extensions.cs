@@ -17,5 +17,10 @@ namespace NeonVectorShooter
         {
             return new Point((int)vector.X, (int)vector.Y);
         }
+
+        public static float NextFloat(this Random rand, float minValue, float maxValue)
+        {
+            return (float)rand.NextDouble() * (maxValue - minValue) + minValue;
+        }
     }
 }

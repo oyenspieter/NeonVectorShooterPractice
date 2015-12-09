@@ -10,6 +10,9 @@ namespace NeonVectorShooter
     class PlayerShip : Entity
     {
         private static PlayerShip instance;
+        const int cooldownFrames = 6;
+        int cooldownRemaining = 0;
+        static Random rand = new Random();
 
         public static PlayerShip Instance
         {
@@ -37,6 +40,19 @@ namespace NeonVectorShooter
 
             if (velocity.LengthSquared() > 0)
                 orientation = velocity.ToAngle();
+
+            var aim = Input.GetAimDirection();
+            if (aim.LengthSquared() > 0 && cooldownRemaining <= 0)
+            {
+                cooldownRemaining = cooldownFrames;
+                float aimAngle = aim.ToAngle();
+                Quaternion aimQuat = Quaternion.CreateFromYawPitchRoll(0, 0, aimAngle);
+
+                float randomSpread = rand.NextFloat(-0.04f, 0.04f) + rand.NextFloat(-0.04f, 0.04f);
+                Vector2 vel = MathUtil.FromPolar(aimAngle + randomSpread, 11f);
+                // continue
+
+            }
         }
     }
 }
