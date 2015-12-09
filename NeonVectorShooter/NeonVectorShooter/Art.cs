@@ -10,19 +10,19 @@ namespace NeonVectorShooter
 {
     static class Art
     {
-        public static Texture2D player { get; private set; }
-        public static Texture2D seeker { get; private set; }
-        public static Texture2D wanderer { get; private set; }
-        public static Texture2D bullet { get; private set; }
-        public static Texture2D pointer { get; private set; }
+        public static Texture2D Player { get; private set; }
+        public static Texture2D Seeker { get; private set; }
+        public static Texture2D Wanderer { get; private set; }
+        public static Texture2D Bullet { get; private set; }
+        public static Texture2D Pointer { get; private set; }
 
         public static void Load(ContentManager content)
         {
-            player = content.Load<Texture2D>("Player");
-            seeker = content.Load<Texture2D>("Seeker");
-            wanderer = content.Load<Texture2D>("Wanderer");
-            bullet = content.Load<Texture2D>("Bullet");
-            pointer = content.Load<Texture2D>("Pointer");
+            Player = content.Load<Texture2D>("Player");
+            Seeker = content.Load<Texture2D>("Seeker");
+            Wanderer = content.Load<Texture2D>("Wanderer");
+            Bullet = content.Load<Texture2D>("Bullet");
+            Pointer = content.Load<Texture2D>("Pointer");
         }
     }
 }

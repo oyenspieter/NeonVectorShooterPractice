@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NeonVectorShooter
 {
-    abstract class Enitity
+    abstract class Entity
     {
         protected Texture2D image;
         // The tint of the image. This allows us to chagne the transparancy

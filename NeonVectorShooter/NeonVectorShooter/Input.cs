@@ -70,10 +70,41 @@ namespace NeonVectorShooter
 
         public static Vector2 GetAimDirection()
         {
-            //TODO
-            return Vector2.Zero;
+            if (isAimingWithMouse)
+                return GetMouseAimDirection();
+
+            Vector2 direction = gamepadeState.ThumbSticks.Right;
+            direction.Y *= -1;
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+                direction.X -= 1;
+            if (keyboardState.IsKeyDown(Keys.Right))
+                direction.X += 1;
+            if (keyboardState.IsKeyDown(Keys.Up))
+                direction.Y -= 1;
+            if (keyboardState.IsKeyDown(Keys.Down))
+                direction.Y += 1;
+
+            // If there's no aim input, return zero. Otherwise the diretction to have a length of one
+            if (direction == Vector2.Zero)
+                return Vector2.Zero;
+            else
+                return Vector2.Normalize(direction);
         }
 
+        public static Vector2 GetMouseAimDirection()
+        {
+            Vector2 direction = MousePosition - PlayerShip.Instance.position;
 
+            if (direction == Vector2.Zero)
+                return Vector2.Zero;
+            else
+                return Vector2.Normalize(direction);
+        }
+
+        public static bool WasBombButtonPressed()
+        {
+            return WasButtonPressed(Buttons.LeftTrigger) || WasButtonPressed(Buttons.RightTrigger) || WasKeyPressed(Keys.Space);
+        }
     }
 }

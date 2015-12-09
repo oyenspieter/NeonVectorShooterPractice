@@ -53,6 +53,7 @@ namespace NeonVectorShooter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            Input.Update();
             EntityManager.Update();
 
             base.Update(gameTime);
