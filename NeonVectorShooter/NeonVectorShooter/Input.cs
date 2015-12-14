@@ -17,6 +17,8 @@ namespace NeonVectorShooter
 
         public static Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }
 
+        private static Vector2 testDirection = Vector2.Zero;
+
         public static void Update()
         {
             lastKeyboardState = keyboardState;
@@ -47,11 +49,17 @@ namespace NeonVectorShooter
             return lastGamepadState.IsButtonUp(button) && lastGamepadState.IsButtonDown(button);
         }
 
+        public static bool WasMouseButtonPressed()
+        {
+            return mouseState.LeftButton == ButtonState.Pressed;
+        }
+
         public static Vector2 GetMovementDirection()
         {
-            Vector2 direction = gamepadeState.ThumbSticks.Left;
-            direction.Y *= -1; // inverts the y-axis
+            //Vector2 direction = gamepadeState.ThumbSticks.Left;
+            //direction.Y *= -1; // inverts the y-axis
 
+            /*
             if (keyboardState.IsKeyDown(Keys.A))
                 direction.X -= 1;
             if (keyboardState.IsKeyDown(Keys.D))
@@ -60,12 +68,37 @@ namespace NeonVectorShooter
                 direction.Y -= 1;
             if (keyboardState.IsKeyDown(Keys.S))
                 direction.Y += 1;
+            */
+
+            
+            double angle = Math.Atan2(testDirection.Y, testDirection.X);
+
+            if (keyboardState.IsKeyDown(Keys.A))
+            {
+                angle -= GameRoot.gameTimeRef.ElapsedGameTime.Ticks * 0.0000003F;
+                testDirection.X = (float)Math.Cos(angle);
+                testDirection.Y = (float)Math.Sin(angle);
+
+                testDirection = new Vector2(testDirection.X, testDirection.Y) * 0.00001F * GameRoot.gameTimeRef.ElapsedGameTime.Ticks ;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.D))
+            {
+                angle += GameRoot.gameTimeRef.ElapsedGameTime.Ticks * 0.0000003F;
+                testDirection.X = (float)Math.Cos(angle);
+                testDirection.Y = (float)Math.Sin(angle);
+
+                testDirection = new Vector2(testDirection.X, testDirection.Y) * 0.00001F * GameRoot.gameTimeRef.ElapsedGameTime.Ticks;
+            }
+
+
 
             // Clamp the length of the vector to a maximum of 1
-            if (direction.LengthSquared() > 1)
-                direction.Normalize();
+            //if (direction.LengthSquared() > 1)
+            //  direction.Normalize();
 
-            return direction;
+            //return direction;
+            return testDirection;
         }
 
         public static Vector2 GetAimDirection()

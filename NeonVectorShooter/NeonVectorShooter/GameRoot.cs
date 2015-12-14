@@ -19,7 +19,7 @@ namespace NeonVectorShooter
         public static GameRoot Instance { get; private set; }
         public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
         public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
-        
+        public static GameTime gameTimeRef;
 
         public GameRoot()
         {
@@ -57,6 +57,8 @@ namespace NeonVectorShooter
             EntityManager.Update();
 
             base.Update(gameTime);
+
+            gameTimeRef = gameTime;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -65,6 +67,9 @@ namespace NeonVectorShooter
 
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
             EntityManager.Draw(spriteBatch);
+
+            // draw the custom mouse cursor
+            spriteBatch.Draw(Art.Pointer, Input.MousePosition, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

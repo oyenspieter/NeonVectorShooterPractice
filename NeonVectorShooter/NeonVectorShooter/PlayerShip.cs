@@ -33,16 +33,21 @@ namespace NeonVectorShooter
 
         public override void Update()
         {
-            const float speed = 8;
+            //const float speed = 8;
+            const float speed = 1;
+
             velocity = speed * Input.GetMovementDirection();
+
             position += velocity;
+
             position = Vector2.Clamp(position, Size / 2, GameRoot.ScreenSize - Size / 2);
 
             if (velocity.LengthSquared() > 0)
                 orientation = velocity.ToAngle();
 
+            //shooting
             var aim = Input.GetAimDirection();
-            if (aim.LengthSquared() > 0 && cooldownRemaining <= 0)
+            if (aim.LengthSquared() > 0 && cooldownRemaining <= 0 && Input.WasMouseButtonPressed())
             {
                 cooldownRemaining = cooldownFrames;
                 float aimAngle = aim.ToAngle();
@@ -50,9 +55,17 @@ namespace NeonVectorShooter
 
                 float randomSpread = rand.NextFloat(-0.04f, 0.04f) + rand.NextFloat(-0.04f, 0.04f);
                 Vector2 vel = MathUtil.FromPolar(aimAngle + randomSpread, 11f);
-                // continue
+
+                Vector2 offset = Vector2.Transform(new Vector2(25, -8), aimQuat);
+                EntityManager.Add(new Bullet(position + offset, vel));
+
+                offset = Vector2.Transform(new Vector2(25, 8), aimQuat);
+                EntityManager.Add(new Bullet(position + offset, vel));
 
             }
+
+            if (cooldownRemaining > 0)
+                cooldownRemaining--;
         }
     }
 }
